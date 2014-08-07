@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AX_2012_R2_modelEntities2.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AX_2012_R2_modelEntities2StoreContainer">
+          <EntitySet Name="ElementTypes" EntityType="AX_2012_R2_modelEntities2.Store.ElementTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Layer" EntityType="AX_2012_R2_modelEntities2.Store.Layer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Model" EntityType="AX_2012_R2_modelEntities2.Store.Model" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ModelElement" EntityType="AX_2012_R2_modelEntities2.Store.ModelElement" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ModelElementData" EntityType="AX_2012_R2_modelEntities2.Store.ModelElementData" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ModelManifest" EntityType="AX_2012_R2_modelEntities2.Store.ModelManifest" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_ManifestHasModelId" Association="AX_2012_R2_modelEntities2.Store.FK_ManifestHasModelId">
+            <End Role="Model" EntitySet="Model" />
+            <End Role="ModelManifest" EntitySet="ModelManifest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ModelHasLayerId" Association="AX_2012_R2_modelEntities2.Store.FK_ModelHasLayerId">
+            <End Role="Layer" EntitySet="Layer" />
+            <End Role="Model" EntitySet="Model" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ElementTypes">
+          <Key>
+            <PropertyRef Name="ElementType" />
+          </Key>
+          <Property Name="ElementType" Type="int" Nullable="false" />
+          <Property Name="ParentType" Type="int" />
+          <Property Name="ElementTypeName" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="TreeNodeName" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Layer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6035: The relationship 'FK_ModelElementData_HasModelId_LayerId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+      -->
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LayerId" Type="int" Nullable="false" />
+          <Property Name="State" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModelGroupId" Type="int" />
+          <Property Name="MarkedForRemoval" Type="bit" Nullable="false" />
+          <Property Name="InstalledBy" Type="nvarchar" MaxLength="20" />
+          <Property Name="ChangedBy" Type="nvarchar" MaxLength="20" />
+          <Property Name="IsDirty" Type="int" />
+        </EntityType>
+        <EntityType Name="ModelElement">
+          <Key>
+            <PropertyRef Name="ElementHandle" />
+          </Key>
+          <Property Name="ElementType" Type="int" Nullable="false" />
+          <Property Name="RootHandle" Type="int" Nullable="false" />
+          <Property Name="ParentHandle" Type="int" Nullable="false" />
+          <Property Name="ElementHandle" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="AxId" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Origin" Type="uniqueidentifier" />
+          <Property Name="PartOfInheritance" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModelElementData">
+          <Key>
+            <PropertyRef Name="LayerId" />
+            <PropertyRef Name="ElementHandle" />
+          </Key>
+          <Property Name="LayerId" Type="int" Nullable="false" />
+          <Property Name="ParentHandle" Type="int" Nullable="false" />
+          <Property Name="ElementHandle" Type="int" Nullable="false" />
+          <Property Name="LegacyId" Type="int" />
+          <Property Name="Properties" Type="varbinary(max)" />
+          <Property Name="FileHeader" Type="varbinary(max)" />
+          <Property Name="BASEVERSION" Type="int" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="SAVECOUNT" Type="int" Nullable="false" />
+          <Property Name="CONSISTENCYDATA" Type="int" Nullable="false" />
+          <Property Name="MODIFIEDDATETIME" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIEDBY" Type="nvarchar" Nullable="false" MaxLength="5" />
+          <Property Name="CREATEDDATETIME" Type="datetime" Nullable="false" />
+          <Property Name="CREATEDBY" Type="nvarchar" Nullable="false" MaxLength="5" />
+          <Property Name="ElementVersion" Type="int" Nullable="false" />
+          <Property Name="ModelId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModelManifest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ModelId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="40" />
+          <Property Name="DisplayName" Type="nvarchar" Nullable="false" MaxLength="40" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Publisher" Type="nvarchar" Nullable="false" MaxLength="40" />
+          <Property Name="Signed" Type="bit" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="InstallMode" Type="int" Nullable="false" />
+          <Property Name="VersionMajor" Type="int" Nullable="false" />
+          <Property Name="VersionMinor" Type="int" Nullable="false" />
+          <Property Name="VersionRevision" Type="int" Nullable="false" />
+          <Property Name="VersionBuildNo" Type="int" Nullable="false" />
+          <Property Name="Details" Type="xml" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ManifestHasModelId">
+          <End Role="Model" Type="AX_2012_R2_modelEntities2.Store.Model" Multiplicity="1" />
+          <End Role="ModelManifest" Type="AX_2012_R2_modelEntities2.Store.ModelManifest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ModelManifest">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ModelHasLayerId">
+          <End Role="Layer" Type="AX_2012_R2_modelEntities2.Store.Layer" Multiplicity="1" />
+          <End Role="Model" Type="AX_2012_R2_modelEntities2.Store.Model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Layer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Model">
+              <PropertyRef Name="LayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AX_2012_R2_modelEntities2" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AX_2012_R2Entities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="ElementTypes" EntityType="AX_2012_R2_modelEntities2.ElementType" />
+          <EntitySet Name="Layers" EntityType="AX_2012_R2_modelEntities2.Layer" />
+          <EntitySet Name="Models" EntityType="AX_2012_R2_modelEntities2.Model" />
+          <EntitySet Name="ModelElements" EntityType="AX_2012_R2_modelEntities2.ModelElement" />
+          <EntitySet Name="ModelElementDatas" EntityType="AX_2012_R2_modelEntities2.ModelElementData" />
+          <EntitySet Name="ModelManifests" EntityType="AX_2012_R2_modelEntities2.ModelManifest" />
+          <AssociationSet Name="FK_ModelHasLayerId" Association="AX_2012_R2_modelEntities2.FK_ModelHasLayerId">
+            <End Role="Layer" EntitySet="Layers" />
+            <End Role="Model" EntitySet="Models" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ManifestHasModelId" Association="AX_2012_R2_modelEntities2.FK_ManifestHasModelId">
+            <End Role="Model" EntitySet="Models" />
+            <End Role="ModelManifest" EntitySet="ModelManifests" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ElementType">
+          <Key>
+            <PropertyRef Name="ElementType1" />
+          </Key>
+          <Property Name="ElementType1" Type="Int32" Nullable="false" />
+          <Property Name="ParentType" Type="Int32" />
+          <Property Name="ElementTypeName" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="TreeNodeName" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Layer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Models" Relationship="AX_2012_R2_modelEntities2.FK_ModelHasLayerId" FromRole="Layer" ToRole="Model" />
+        </EntityType>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LayerId" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModelGroupId" Type="Int32" />
+          <Property Name="MarkedForRemoval" Type="Boolean" Nullable="false" />
+          <Property Name="InstalledBy" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="ChangedBy" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="IsDirty" Type="Int32" />
+          <NavigationProperty Name="Layer" Relationship="AX_2012_R2_modelEntities2.FK_ModelHasLayerId" FromRole="Model" ToRole="Layer" />
+          <NavigationProperty Name="ModelManifests" Relationship="AX_2012_R2_modelEntities2.FK_ManifestHasModelId" FromRole="Model" ToRole="ModelManifest" />
+        </EntityType>
+        <EntityType Name="ModelElement">
+          <Key>
+            <PropertyRef Name="ElementHandle" />
+          </Key>
+          <Property Name="ElementType" Type="Int32" Nullable="false" />
+          <Property Name="RootHandle" Type="Int32" Nullable="false" />
+          <Property Name="ParentHandle" Type="Int32" Nullable="false" />
+          <Property Name="ElementHandle" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="AxId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Origin" Type="Guid" />
+          <Property Name="PartOfInheritance" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModelElementData">
+          <Key>
+            <PropertyRef Name="LayerId" />
+            <PropertyRef Name="ElementHandle" />
+          </Key>
+          <Property Name="LayerId" Type="Int32" Nullable="false" />
+          <Property Name="ParentHandle" Type="Int32" Nullable="false" />
+          <Property Name="ElementHandle" Type="Int32" Nullable="false" />
+          <Property Name="LegacyId" Type="Int32" />
+          <Property Name="FileHeader" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="BASEVERSION" Type="Int32" Nullable="false" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="SAVECOUNT" Type="Int32" Nullable="false" />
+          <Property Name="CONSISTENCYDATA" Type="Int32" Nullable="false" />
+          <Property Name="MODIFIEDDATETIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIEDBY" Type="String" Nullable="false" MaxLength="5" Unicode="true" FixedLength="false" />
+          <Property Name="CREATEDDATETIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATEDBY" Type="String" Nullable="false" MaxLength="5" Unicode="true" FixedLength="false" />
+          <Property Name="ElementVersion" Type="Int32" Nullable="false" />
+          <Property Name="ModelId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModelManifest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ModelId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Publisher" Type="String" Nullable="false" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="Signed" Type="Boolean" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="InstallMode" Type="Int32" Nullable="false" />
+          <Property Name="VersionMajor" Type="Int32" Nullable="false" />
+          <Property Name="VersionMinor" Type="Int32" Nullable="false" />
+          <Property Name="VersionRevision" Type="Int32" Nullable="false" />
+          <Property Name="VersionBuildNo" Type="Int32" Nullable="false" />
+          <Property Name="Details" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Model" Relationship="AX_2012_R2_modelEntities2.FK_ManifestHasModelId" FromRole="ModelManifest" ToRole="Model" />
+        </EntityType>
+        <Association Name="FK_ModelHasLayerId">
+          <End Role="Layer" Type="AX_2012_R2_modelEntities2.Layer" Multiplicity="1" />
+          <End Role="Model" Type="AX_2012_R2_modelEntities2.Model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Layer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Model">
+              <PropertyRef Name="LayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ManifestHasModelId">
+          <End Role="Model" Type="AX_2012_R2_modelEntities2.Model" Multiplicity="1" />
+          <End Role="ModelManifest" Type="AX_2012_R2_modelEntities2.ModelManifest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ModelManifest">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AX_2012_R2_modelEntities2StoreContainer" CdmEntityContainer="AX_2012_R2Entities">
+          <EntitySetMapping Name="ElementTypes">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.ElementType">
+              <MappingFragment StoreEntitySet="ElementTypes">
+                <ScalarProperty Name="ElementType1" ColumnName="ElementType" />
+                <ScalarProperty Name="ParentType" ColumnName="ParentType" />
+                <ScalarProperty Name="ElementTypeName" ColumnName="ElementTypeName" />
+                <ScalarProperty Name="TreeNodeName" ColumnName="TreeNodeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Layers">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.Layer">
+              <MappingFragment StoreEntitySet="Layer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Models">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.Model">
+              <MappingFragment StoreEntitySet="Model">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LayerId" ColumnName="LayerId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="ModifiedDateTime" ColumnName="ModifiedDateTime" />
+                <ScalarProperty Name="ModelGroupId" ColumnName="ModelGroupId" />
+                <ScalarProperty Name="MarkedForRemoval" ColumnName="MarkedForRemoval" />
+                <ScalarProperty Name="InstalledBy" ColumnName="InstalledBy" />
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="IsDirty" ColumnName="IsDirty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModelElements">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.ModelElement">
+              <MappingFragment StoreEntitySet="ModelElement">
+                <ScalarProperty Name="ElementType" ColumnName="ElementType" />
+                <ScalarProperty Name="RootHandle" ColumnName="RootHandle" />
+                <ScalarProperty Name="ParentHandle" ColumnName="ParentHandle" />
+                <ScalarProperty Name="ElementHandle" ColumnName="ElementHandle" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AxId" ColumnName="AxId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="PartOfInheritance" ColumnName="PartOfInheritance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModelElementDatas">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.ModelElementData">
+              <MappingFragment StoreEntitySet="ModelElementData">
+                <ScalarProperty Name="LayerId" ColumnName="LayerId" />
+                <ScalarProperty Name="ParentHandle" ColumnName="ParentHandle" />
+                <ScalarProperty Name="ElementHandle" ColumnName="ElementHandle" />
+                <ScalarProperty Name="LegacyId" ColumnName="LegacyId" />
+                <ScalarProperty Name="FileHeader" ColumnName="FileHeader" />
+                <ScalarProperty Name="BASEVERSION" ColumnName="BASEVERSION" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="SAVECOUNT" ColumnName="SAVECOUNT" />
+                <ScalarProperty Name="CONSISTENCYDATA" ColumnName="CONSISTENCYDATA" />
+                <ScalarProperty Name="MODIFIEDDATETIME" ColumnName="MODIFIEDDATETIME" />
+                <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+                <ScalarProperty Name="CREATEDDATETIME" ColumnName="CREATEDDATETIME" />
+                <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+                <ScalarProperty Name="ElementVersion" ColumnName="ElementVersion" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModelManifests">
+            <EntityTypeMapping TypeName="AX_2012_R2_modelEntities2.ModelManifest">
+              <MappingFragment StoreEntitySet="ModelManifest">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Signed" ColumnName="Signed" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="InstallMode" ColumnName="InstallMode" />
+                <ScalarProperty Name="VersionMajor" ColumnName="VersionMajor" />
+                <ScalarProperty Name="VersionMinor" ColumnName="VersionMinor" />
+                <ScalarProperty Name="VersionRevision" ColumnName="VersionRevision" />
+                <ScalarProperty Name="VersionBuildNo" ColumnName="VersionBuildNo" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
