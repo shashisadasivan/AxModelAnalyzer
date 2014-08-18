@@ -30,18 +30,23 @@ namespace AxModel.Data2.Core
             //Console.WriteLine("Using connectiong string from config file....!");
         }
 
-        public void Start()
+        public void Start(int minLayer = -1)
         {
 
             this.Dependencies = new ConcurrentBag<ModelDependency>();
 
             //this._minLayerId = 8;
-            this._minLayerId = Properties.Settings.Default.MinApplicationLayer;
+            //TODO: Set this via code if specified
+            if (minLayer <= 0)
+                this._minLayerId = Properties.Settings.Default.MinApplicationLayer;
+            else
+                this._minLayerId = minLayer;
 
             var allModels = Data.AxModelDataProvider.GetModels();
 
             var models = Data.AxModelDataProvider.GetModels().Where(m => m.LayerId >= this._minLayerId).ToList();
-            
+
+            Console.WriteLine("List of Models:");
             models.ForEach(m => {
                 var layer = Data.AxModelDataProvider.GetLayer(m.LayerId);
                 Console.WriteLine(m.Id.ToString() + " : " + layer.Name + " " + m.LayerId);
@@ -57,7 +62,7 @@ namespace AxModel.Data2.Core
             });
             //mfs = mfs.Where(m => m.Model.LayerId >= this._minLayerId).OrderBy(m => m.ModelId).ToList();
             mfs = mfs.OrderBy(m => m.ModelId).ToList();
-
+            Console.WriteLine("List of Models (ordered by modelid):");
             mfs.ForEach(m =>
                 Console.WriteLine(m.ModelId.ToString() + " - " + m.Name + " - "));
 
@@ -91,7 +96,7 @@ namespace AxModel.Data2.Core
                 //                                    && d.LayerId >= this._minLayerId);
                 var otherDatas = Data.AxModelDataProvider.GetModelElementDataForElementData(elementData, this._minLayerId);
 
-                int i = 100;
+                //int i = 100;
                 if (otherDatas != null && otherDatas.Count() > 0)
                 {
                     List<ModelElement> elementTree = new List<ModelElement>();
