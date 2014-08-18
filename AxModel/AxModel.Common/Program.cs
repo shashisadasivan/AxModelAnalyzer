@@ -97,7 +97,7 @@ namespace AxModel.Common
             //var checker = new Data.ModelDependency.Checker();
             
             
-            checker.Start();
+            checker.Start(); // Give the Min layer here, otherwise it will uset the default
             Console.WriteLine();
             Console.WriteLine("Dependencies...");
             var lines = Data2.Core.ModelDependency.GetDependenciesCSV(checker.Dependencies.ToList());
