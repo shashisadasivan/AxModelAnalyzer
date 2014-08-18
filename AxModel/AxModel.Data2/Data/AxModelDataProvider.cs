@@ -117,6 +117,7 @@ namespace AxModel.Data2.Data
         {
             using (var db = new AX_2012_R2Entities())
             {
+               
                 PopulateDb(db);
                 var otherDatas = db.ModelElementDatas
                                    .Where(d => (d.ElementHandle == elementData.ElementHandle
@@ -126,7 +127,6 @@ namespace AxModel.Data2.Data
                                                     && d.ModelId != elementData.ModelId
                                                     && d.LayerId <= elementData.LayerId
                                                     && d.LayerId >= minLayerId);
-
                 return otherDatas.ToList();
             }
         }
