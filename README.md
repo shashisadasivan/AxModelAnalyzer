@@ -1,4 +1,4 @@
-AxModelAnalyzer for AX1012
+AxModelAnalyzer for AX2012
 ===============
 
 Ax Model analyzer
